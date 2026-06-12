@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Daily Task Manager</title>
+    <link rel="stylesheet" href="simple_to_do_list.css">
+</head>
+
+<body>
+
+<header>
+    <h1>📋 Daily Task Manager</h1>
+    <p><i>.....Organize your day and stay productive. .....</i></p>
+</header>
+
+<div class="wave"></div>
+<main>
+
+    <h1 class="heading">Today's Tasks</h1>
+    
+    <h2 id="date"></h2>
+    
+    <div class="stats">
+        <div class="card">
+            <h4>📑Tasks Remaining</h4>
+            <h2 id="taskCount">0</h2>
+        </div>
+    
+        <div class="card">
+            <h4>✅Completed</h4>
+            <h2 id="completedCount">0</h2>
+        </div>
+    </div>
+    
+    <div class="input-section">
+        <input type="text" id="taskInput" placeholder="Enter your task">
+        <button onclick="taskAdd()">➕ Add Task</button>
+    </div>
+    
+    <h2 class="task-heading">📋 Your Tasks</h2>
+    
+    <ul id="taskList"></ul>
+    
+    </main>
+
+<footer>
+    <p>🤍 Made by Parkhi Verma</p>
+</footer>
+
+<script src="js_to_do list.js"></script>
+
+
+</body>
+</html>

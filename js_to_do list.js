@@ -177,3 +177,4 @@ document.getElementById("date").innerText =
 window.onload = function () {
     loadTasks();
 }; 
+

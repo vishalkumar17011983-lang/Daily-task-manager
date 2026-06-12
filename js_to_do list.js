@@ -1,59 +1,79 @@
 function createTask(taskText, completed = false) {
+
+    
     let li = document.createElement("li");
-    li.innerHTML = taskText + " ";
-
+    
+    let checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = completed;
+    
+    li.appendChild(checkbox);
+    
+    let taskSpan = document.createElement("span");
+    taskSpan.innerHTML = taskText + " ";
+    
     if (completed) {
-        li.style.textDecoration = "line-through";
+        taskSpan.style.textDecoration = "line-through";
+        taskSpan.style.color = "gray";
     }
-
-    li.onclick = function () {
-        if (li.style.textDecoration === "line-through") {
-            li.style.textDecoration = "none";
+    
+    li.appendChild(taskSpan);
+    
+    checkbox.onchange = function () {
+    
+        if (checkbox.checked) {
+            taskSpan.style.textDecoration = "line-through";
+            taskSpan.style.color = "gray";
         } else {
-            li.style.textDecoration = "line-through";
+            taskSpan.style.textDecoration = "none";
+            taskSpan.style.color = "black";
         }
-
+    
         saveTasks();
         updateTaskCount();
     };
-
+    
     let btn = document.createElement("button");
     btn.innerHTML = "Delete";
-
-    btn.onclick = function (event) {
-        event.stopPropagation();
-
+    
+    btn.onclick = function () {
+    
         li.remove();
-
+    
         saveTasks();
         updateTaskCount();
     };
-
+    
     li.appendChild(btn);
-
+    
     let editBtn = document.createElement("button");
     editBtn.innerHTML = "Edit";
-
-    editBtn.onclick = function (event) {
-        event.stopPropagation();
-
+    
+    editBtn.onclick = function () {
+    
         let newText = prompt(
             "Edit task:",
-            li.firstChild.textContent.trim()
+            taskSpan.textContent.trim()
         );
-
+    
         if (newText !== null && newText.trim() !== "") {
-            li.firstChild.textContent = newText + " ";
+    
+            taskSpan.textContent = newText + " ";
+    
             saveTasks();
         }
     };
-
+    
     li.appendChild(editBtn);
-
+    
     document.getElementById("taskList").appendChild(li);
-
+    
     updateTaskCount();
-}
+    
+    
+    }
+    
+
 
 function taskAdd() {
     let input = document.getElementById("taskInput");
@@ -71,46 +91,66 @@ function taskAdd() {
     input.value = "";
 }
 
+
 function saveTasks() {
+
+    
     let tasks = [];
-
+    
     let items = document.querySelectorAll("#taskList li");
-
+    
     items.forEach(function (item) {
+    
+        let checkbox =
+            item.querySelector('input[type="checkbox"]');
+    
+        let taskSpan =
+            item.querySelector("span");
+    
         tasks.push({
-            text: item.firstChild.textContent.trim(),
-            completed:
-                item.style.textDecoration === "line-through"
+            text: taskSpan.textContent.trim(),
+            completed: checkbox.checked
         });
+    
     });
-
+    
     localStorage.setItem(
         "tasks",
         JSON.stringify(tasks)
     );
-}
+    
+    
+    }
 
-function updateTaskCount() {
-    let items = document.querySelectorAll("#taskList li");
 
-    let remaining = 0;
-    let completed = 0;
+    function updateTaskCount() {
 
-    items.forEach(function (item) {
-        if (
-            item.style.textDecoration === "line-through"
-        ) {
-            completed++;
-        } else {
-            remaining++;
+        
+        let items = document.querySelectorAll("#taskList li");
+        
+        let remaining = 0;
+        let completed = 0;
+        
+        items.forEach(function (item) {
+        
+            let checkbox =
+                item.querySelector('input[type="checkbox"]');
+        
+            if (checkbox.checked) {
+                completed++;
+            } else {
+                remaining++;
+            }
+        
+        });
+        
+        document.getElementById("taskCount").innerHTML = remaining;
+        document.getElementById("completedCount").innerHTML = completed;
+        
+        
         }
-    });
 
-    document.getElementById("taskCount").innerHTML = remaining;
-
-    document.getElementById("completedCount").innerHTML = completed;
-}
-
+        
 function loadTasks() {
     let tasks =
         JSON.parse(localStorage.getItem("tasks")) || [];
@@ -136,4 +176,4 @@ document.getElementById("date").innerText =
 
 window.onload = function () {
     loadTasks();
-};
+}; 
